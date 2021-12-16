@@ -1,0 +1,319 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.75in]{geometry} % lots more margin
+\pagenumbering{gobble} % ignore page numbers
+
+\usepackage{titling}
+\setlength{\droptitle}{-0.75in}
+
+\setlength{\parindent}{0cm}
+
+\usepackage{geometry}
+\geometry{
+	paper=letterpaper,
+	top=1cm, bottom=1cm,
+    left=1.25cm, right=1.25cm,
+    % showframe % for debugging spacing
+}
+
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{hyperref} % for nice looking urls
+\usepackage{booktabs} % for making tables
+\usepackage{amssymb}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subfigure}
+\usepackage{multicol}
+
+\usepackage{titlesec}
+
+\titleformat*{\section}{\large\bfseries}
+
+\begin{document}
+
+\begin{multicols*}{2}
+\section*{Curves}
+
+A \textit{parametrized curve} in $\mathbb{R}^n$ is a map $\gamma : (\alpha, \beta) \mapsto \mathbb{R}^n$ for some finite $\alpha, \beta$.
+
+If $\gamma$ is a parametrized curve, its first derivative $\dot{\gamma}(t)$ is called the \textit{tangent vector} of $\gamma$ at the point $\gamma(t)$.
+
+The \textit{arc-length} of a curve $\gamma$ starting at the point $\gamma(t_0)$ is the function \[s(t) = \int_{t_0}^t \lVert \dot{\gamma}(u)\rVert du\]
+
+The quantity $\frac{ds}{dt}$ is the speed of the curve, which is $\lVert \dot{\gamma}(t) \rVert$. $\gamma$ is said to be \textit{unit-speed} if $\lVert \dot{\gamma}(t) \rVert = 1$ for all $t$.
+
+Let $\mathbf{n}(t)$ be a unit vector that is a smooth function of a parameter $t$. The dot product $\mathbf{n}(t)\cdot\dot{\mathbf{n}}(t) = 0$ for all $t$. i.e. $\dot{\mathbf{n}} = 0$ or perpendicular to $\mathbf{n}$. In particular, if $\gamma$ is unit-speed, then either $\ddot{\gamma} = 0$ or $\ddot{\gamma}\perp \dot{\gamma}$.
+
+A parametrized curve $\tilde{\gamma} : (\tilde{\alpha}, \tilde{\beta}) \mapsto \mathbb{R}^n$ is a \textit{reparametrization} of a parametrized curve ${\gamma} : ({\alpha}, {\beta}) \mapsto \mathbb{R}^n$ if there is a smooth bijective map $\phi: (\tilde{\alpha}, \tilde{\beta}) \mapsto (\alpha, \beta)$ (the \textit{reparametrization map}) such that the inverse map $\phi^{-1}:(\alpha, \beta) \mapsto (\tilde{\alpha}, \tilde{\beta})$ is also smooth, and \[\tilde{\gamma}(\tilde{t}) = \gamma(\phi(\tilde{t})) \;\;\forall t \in (\tilde{\alpha}, \tilde{\beta})\] Two curves that are reparametrizations of each other have the same image, so they should have the same geometric properties.
+
+A point $\gamma(t)$ is said to be a \textit{regular point} if $\dot{\gamma}(t) \neq 0$, otherwise $\gamma(t)$ is a \textit{singular point}. A curve $\gamma$ is said to be regular if all of its points are regular. Any reparametrization of a regular curve is regular. The arclength function $s(t)$ of a regular curve is a smooth function of $t$.
+
+A parametrized curve has a unit-speed reparametrization iff it is regular. Let $\gamma$ be a regular curve and let $\tilde{\gamma}$ be a unit-speed reparametrization of $\gamma$: $\tilde{\gamma}(u(t)) = \gamma(t)$ where $u$ is a smooth function of $t$. If $s$ is the arclength of $\gamma$, we have $u = \pm s + c$ for some constant $c$. Meaning, to reparametrize a curve to be unit speed, we can reparametrize it wrt its arclength.
+
+Let $T \in \mathbb{R}$, we say that $\gamma$ is $T$-periodic if $\gamma(t+T) = \gamma(t)$ for all $t \in \mathbb{R}$. If $\gamma$ is not constant and is $T$-periodic for some nonzero $T$, then $\gamma$ is said to be \textit{closed}. Every curve is said to be 0-periodic. The \textit{period} of a closed curve is the smallest number $T$ such that $\gamma$ is $T$-periodic.
+
+A curve is said to have a \textit{self-intersection} at a point $\mathbf{p}$ of the curve if there exists parameter values $a \neq b$ such that (i) $\gamma(a) = \gamma(b) = \mathbf{p}$, and (2) if $\gamma$ is closed with period $T$, then $a - b$ is not an integer multiple of $T$.
+
+\section*{Curvature and Torsion of Curves}
+
+Curvature for a curve is only defined on an interval for a curve where no singular points exist, for a regular curve, the curvature of a curve is defined as \[\kappa = \frac{\lVert\ddot{\gamma} \times \dot{\gamma}\rVert}{\lVert\dot{\gamma}\rVert^2}\] Note that if $\gamma$ is unit speed, the simplifies to $\kappa = \lVert \ddot{\gamma} \rVert$. If $\ddot{\gamma} = 0$ everywhere, then $\gamma$ is part of a straight line.
+
+Torsion on a regular curve is defined as \[\tau = \frac{(\dot{\gamma} \times \ddot{\gamma})\cdot\dddot{\gamma}}{\lVert \dot{\gamma} \times \ddot{\gamma}\rVert ^2}\] A curve is contained in a plane iff it has zero torsion everywhere. If a curve has constant curvature and zero torsion, then it is a part of a circle.
+
+\section*{Local Coordinate system of Curves}
+
+Let $\gamma$ be a unit-speed curve in $\mathbb{R}^3$, and let $\mathbf{t} = \dot{\gamma}$ be its tangent vector. If the curvature $\kappa$ is nonzero, we define the \textit{principal normal} of $\gamma$ to be the vector \[\mathbf{n}(s) = \frac{1}{\kappa(s)}\dot{\mathbf{t}}(s)\] Since $\lVert \dot{\mathbf{t}}\rVert = \kappa$, $\mathbf{n}$ is a unit vector. We can complete an orthonormal basis about $\gamma(t)$ by forming a \textit{binormal} $\mathbf{b} = \mathbf{t} \times \mathbf{n}$, and we have a orthonormal basis $\{\mathbf{t}, \mathbf{n}, \mathbf{b}\}$ about every point $\gamma(t)$. Because this is an orthonormal basis, we relate each of these vectors with the others\[\mathbf{b} = \mathbf{t} \times \mathbf{n}\;\;\;\;\;\;\mathbf{t} = \mathbf{n} \times \mathbf{b}\;\;\;\;\;\;\mathbf{n} = \mathbf{b} \times \mathbf{t}\]
+
+We can connect the derivatives of all of the basis vectors to the curvature, torsion, and basis vectors themselves via a \textit{Frenet-Serret} system
+
+\[
+\left[\begin{array}{c}
+    \dot{\mathbf{t}}\\
+    \dot{\mathbf{n}}\\
+    \dot{\mathbf{b}}\\
+\end{array}\right] =   
+\left[\begin{array}{ccc}
+    0 & \kappa & 0\\
+    -\kappa & 0 & \tau\\
+    0 & -\tau & 0
+\end{array}\right]
+\left[\begin{array}{c}
+    {\mathbf{t}}\\
+    {\mathbf{n}}\\
+    {\mathbf{b}}\\
+\end{array}\right]
+\]
+
+Let $\gamma(s)$ and $\tilde{\gamma}(s)$ be two unit-speed curves in $\mathbb{R}^3$ with the same curvature and torsion at every point. Then, there is a direct isometry $M$ of $\mathbb{R}^3$ such that $\tilde{\gamma}(s) = M(\gamma(s))$.
+
+\section*{Surfaces}
+
+A subset $\mathcal{S}$ of $\mathbb{R}^3$ is a \textit{surface} if, for every point $\mathbf{p} \in \mathcal{S}$, there is an open set $U \subset \mathbb{R}^2$ and an open set $W \subset \mathbb{R}^3$ containing $\mathbf{p}$ such that $\mathcal{S} \cap W$ is homeomorphic to $U$. A subset of a surface $\mathcal{S}$ of the form $\mathcal{S}\cap W$ is called an \textit{open subset} of $\mathcal{S}$. A homeomorphism $\sigma : U \mapsto \mathcal{S}\cap W$ is a \textit{surface patch} or \textit{parametrization} of the open subset $\mathcal{S} \cap W$ of $\mathcal{S}$. A collection of such surface patches whose images cover the whole of $\mathcal{S}$ is called an \textit{atlas} of $\mathcal{S}$.
+
+A surface patch $\sigma$ is said to be \textit{regular} if it is smooth and the vectors $\sigma_u$, $\sigma_v$ are linear independent at all points. A surface patch is then said to be \textit{allowable} if it is a homeomorphism from $U$ to an open subset of $\mathcal{S}$. A surface is \textit{smooth} if for any point $\mathbf{p} \in \mathcal{S}$, there is an allowable surface patch $\gamma$ such that $\mathbf{p} \in \sigma(U)$. The transition maps of a smooth surface are smooth.
+
+Suppose $f : \mathcal{S}_1 \mapsto \mathcal{S}_2$ is a \textit{smooth map}, and if $\sigma_1$ is an allowable surface patch on $\mathcal{S}_1$, then $\sigma_2 = f \circ \sigma_1$ is an allowable surface patch on $\mathcal{S}_2$.
+
+A \textit{tangent vector} to a surface $\mathcal{S}$ at a point $\mathbf{p} \in \mathcal{S}$ is the tangent vector at $\mathbf{p}$ of a curve in $\mathcal{S}$ passing through $\mathbf{p}$. The \textit{tangent plane} $T_{\mathbf{p}}\mathcal{S}$ is the set of all tangent vectors to $\mathcal{S}$ at $\mathbf{p}$. Naturally, $\{\sigma_u, \sigma_v\}$ at a particular point $\mathbf{p}$ is a basis to $T_{\mathbf{p}}\mathcal{S}$.
+
+The derivative of a smooth map $f : \mathcal{S}_1 \mapsto \mathcal{S}_2$ is $D_{\mathbf{p}}f : T_{\mathbf{p}}\mathcal{S}_1 \mapsto T_{f(\mathbf{p})}\mathcal{S}_2$ such that $D_{\mathbf{p}}f(\mathbf{w_1}) = \tilde{\mathbf{w}_2}$ for any tangent vector $\mathbf{w}_1 \in T_{\mathbf{p}}\mathcal{S}$. 
+
+If $f(\sigma(u, v)) = \tilde{\sigma}(\alpha(u, v), \beta(u, v))$, then $D_{\mathbf{p}}f$ is a linear map \[\left(\begin{array}{cc}
+\alpha_u & \alpha_v \\
+\beta_u & \beta_v
+\end{array}\right)\] This linear map is invertible iff $f$ is a local diffeomorphism.
+
+The normal of a surface patch is given by \[\mathbf{N}_{\sigma} = \frac{\sigma_u \times \sigma_v}{\lVert \sigma_u \times \sigma_v \rVert}\]
+
+A surface $\mathcal{S}$ is \textit{orientable} if there exists an atlas $\mathcal{A}$ for $\mathcal{S}$ with the property that, if $\Phi$ is the transition map between any two patches in $\mathcal{A}$, then $\det(J(\Phi)) > 0$ where $\Phi$ is defined. An orientable surface has a smooth choice of unit normal at any point.
+
+\section*{Fundamental Forms and Maps}
+
+The first fundamental form of surface patch $\sigma$ is given by $Edu^2 + F dudv + Fdv^2$ with coefficients are defined as \[E = \sigma_u \cdot \sigma_u \qquad F = \sigma_u \cdot \sigma_v \qquad G = \sigma_v \cdot \sigma_v\]
+
+If $\mathcal{S}_1, \mathcal{S}_2$ are surfaces, a smooth map $f : \mathcal{S}_1 \mapsto \mathcal{S}_2$ is called a \textit{local isometry} if it takes any curve in $\mathcal{S}_1$ to a curve of the same length in $\mathcal{S}_2$ (\textit{length-preserving}).
+
+A local diffeomorphism $f: \mathcal{S}_1 \mapsto \mathcal{S}_2$ is a local isometry iff for any surface patch $\sigma_1$ of $\mathcal{S}_1$, $\sigma_1$ and $\sigma_2 = f \circ \sigma_1$ have the same FFF.
+
+If $\mathcal{S}_1, \mathcal{S}_2$ are surfaces, a smooth map $f : \mathcal{S}_1 \mapsto \mathcal{S}_2$ is called a \textit{conformal map} such that if two curves $\gamma_1, \tilde{\gamma}_1$ on $\mathcal{S}_1$ intersects at $\mathbf{p} \in \mathcal{S}_1$ at an angle $\theta_1$, then the angle of intersection $\theta_2$ between $\gamma_2, \tilde{\gamma}_2$ under the image of $f$ intersecting at $f(\mathbf{p}) \in \mathcal{S}_2$ is equal to $\theta_1$ (\textit{angle-preserving}).
+
+A local diffeomorphism $f: \mathcal{S}_1 \mapsto \mathcal{S}_2$ is a conformal iff for any surface patch $\sigma$ of $\mathcal{S}_1$, the FFF of the patches of $\mathcal{S}_1$ and $f \circ \sigma$ of $\mathcal{S}_2$ are proportional. In particular, a surface patch $\sigma$ is conformal iff its FFF is $\lambda(du^2 + dv^2)$ for some smooth function $\lambda(u, v)$. Every surface has an atlas consisting of conformal surface patches.
+
+The area $\mathcal{A}_{\sigma}(R)$ of the part $\sigma(R)$ of a surface patch $\sigma : U \mapsto \mathbb{R}^3$ corresponding to a region $R \subseteq U$ is \[\mathcal{A}_\sigma(R) = \int_R\lVert \sigma_u \times \sigma_v \rVert dudv= \int_R d\mathcal{A}_\sigma\] We can write $\lVert \sigma_u \times \sigma_v \rVert = \sqrt{EG-F^2}$. For a regular surface, $\sqrt{EG - F^2} > 0$ everywhere since $\sigma_u \times \sigma_v$ is never zero. Note that the area of a surface patch is unchanged by parametrization
+
+A local diffeomorphism $f: \mathcal{S}_1 \mapsto \mathcal{S}_2$ is \textit{equiareal} if it takes any region in $\mathcal{S}_1$ to a region of the same area in $\mathcal{S}_2$ (\textit{area-preserving}). Two surfaces $\mathcal{S}_1, \mathcal{S}_2$ are equiareal iff \[E_1G_1 - F_1^2 = E_2G_2 - F_2^2\]
+
+The Second Fundamental form of a surface patch $\sigma$ is given by $Ldu^2 + Mdudv + Ndv^2$ with coefficients given as \[L = \sigma_{uu} \cdot \mathbf{N}\quad M = \sigma_{uv} \cdot \mathbf{N} \quad N = \sigma_{vv} \cdot \mathbf{N}\] Where $\mathbf{N}$ is the surface normal.
+
+\section*{Curvature of Surfaces}
+
+The values of $\mathbf{N}$ at the points of $\mathcal{S}$ are recorded by its \textit{Gauss map} $\mathcal{G}_\mathcal{S}$. The derivative of $\mathcal{G}$ is a linear map from the tangent plane of $\mathcal{S}$ to itself $D_\mathbf{p}\mathcal{G} : T_\mathbf{p}\mathcal{S} \mapsto T_\mathbf{p}\mathcal{S}$
+
+The \textit{Weingarten map} $\mathcal{W}_{\mathbf{p},\mathcal{S}}$ of $\mathcal{S}$ at $\mathbf{p}$ is defined by \[\mathcal{W}_{\mathbf{p}, \mathcal{S}} = - D_\mathbf{p}\mathcal{G}_\mathcal{S}\]
+
+Let $\sigma$ be a surface patch with unit normal $\mathbf{N}$. Then \[\mathbf{N}_u \cdot \sigma_u = -L \quad \mathbf{N}_u \cdot \sigma_v = \mathbf{N}_v \cdot \sigma_u = -M \quad \mathbf{N}_v \cdot \sigma_v = -N\]
+
+We can describe a surface's curvature in terms of different components. We begin with a curve that lies on the surface $\gamma$, we have \[\ddot{\gamma} = \kappa_n \mathbf{N} + \kappa_g \mathbf{N} \times \dot{\gamma}\] where $\kappa_n$ is the \textit{normal curvature} and $\kappa_g$ is the \textit{geodesic curvature}. Furthermore, we have the following \[\kappa_n = \ddot{\gamma} \cdot \mathbf{N}\quad\kappa_g = \ddot{\gamma} \cdot (\mathbf{N} \times \dot{\gamma})\]\[\kappa^2 = \kappa_n^2 + \kappa_g^2\]\[\kappa_n = \kappa\cos\psi\quad\kappa_g = \pm\kappa\cos\psi\]
+If $\gamma(t) = \sigma(u(t), v(t))$, then \[\kappa_n = L\dot{u}^2 + 2M \dot{u}\dot{v} + N\dot{v}^2\]
+
+(\textit{Meusnier's Theorem}) Let $\mathbf{p}$ be a point of a surface $\mathcal{S}$ and let $\mathbf{v}$ be a unit tangent vector to $\mathcal{S}$ at $\mathbf{p}$. Let $\Pi_\theta$ be the plane containing the line through $\mathbf{p}$ parallel to $\mathbf{v}$ and making an angle $\theta$ with the tangent plane $T_\mathbf{p}\mathcal{S}$, and assume that $\Pi_\theta$ is not parallel to $T_\mathbf{p}\mathcal{S}$. Suppose that $\Pi_\theta$ intersects $\mathcal{S}$ in a curve with curvature $\kappa_\theta$. The, $\kappa_\theta \sin \theta$ is independent of $\theta$.
+
+The curvatures $\kappa, \kappa_n, \kappa_g$ of a normal section of a surface are related by \[\kappa_n \pm \kappa\quad\kappa_g = 0\]
+
+% TODO: section 7.4 covariant derivative
+
+Let $\sigma(u, v)$ be a surface patch, then 
+
+\[\begin{aligned}
+    \sigma_{uu} &= \Gamma_{11}^1\sigma_u + \Gamma_{11}^2\sigma_v + L\mathbf{N}\\
+    \sigma_{uv} &= \Gamma_{12}^1\sigma_u + \Gamma_{12}^2\sigma_v + M\mathbf{N}\\
+    \sigma_{vv} &= \Gamma_{22}^1\sigma_u + \Gamma_{22}^2\sigma_v + N\mathbf{N}\\
+\end{aligned}\]
+
+Where each of the $\Gamma_{\cdot\cdot}^{\cdot}$ coefficients are called \textit{Christoffel symbols} defined as 
+
+\[\begin{aligned}
+    \Gamma_{11}^1 &=& \frac{GE_u - 2FF_u + FE_v}{2(EG - F^2)} \\ \Gamma_{11}^2 &=& \frac{2EF_u - E E_v -FE_u}{(EG - F^2)}\\
+    \Gamma_{12}^1 &=& \frac{GE_v - FG_u}{2(EG - F^2)} \\ \Gamma_{12}^2 &=& \frac{EG_u - FE_v}{(EG - F^2)}\\
+    \Gamma_{22}^1 &=& \frac{2GF_v-GG_u-FG_v}{2(EG - F^2)} \\ \Gamma_{22}^2 &=& \frac{EG_v-2FF_v-FG_u}{(EG - F^2)}\\
+\end{aligned}\]
+
+Let $\gamma = \sigma(u(t), v(t))$ be a curve on a surface patch $\sigma$, and let $\mathbf{v}(t) = \alpha(t)\sigma_u + \beta(t)\sigma_v$ be a tangent vector field along $\gamma$, where $\alpha, \beta$ are smooth functions of $t$. Then, $\mathbf{v}$ is parallel along $\gamma$ iff the following equations are satisfied
+
+\[\begin{aligned}
+\dot{\alpha} + (\Gamma_{11}^1\dot{u} + \Gamma_{12}^1\dot{v})\alpha + (\Gamma_{12}^1\dot{u} + \Gamma_{22}^1\dot{v})\beta&=0 \\
+\dot{\beta} + (\Gamma_{11}^2\dot{u} + \Gamma_{12}^2\dot{v})\alpha + (\Gamma_{12}^2\dot{u} + \Gamma_{22}^2\dot{v})\beta&= 0
+\end{aligned}\]
+
+We can define $2\times2$ matrices $\mathcal{F}_{I}, \mathcal{F}_{II}$ \[\mathcal{F}_{I} = \left[\begin{array}{cc} E & F \\ F & G \end{array}\right]\quad \mathcal{F}_{II} = \left[\begin{array}{cc} L & M \\ M & N \end{array}\right]\]
+
+Let $\mathcal{W}$ be the Weingarten map of an oriented surface at a point $\mathbf{p} \in \mathcal{S}$. The \textit{Gaussian curvature} $K$ and \textit{Mean curvature} $H$ are given as \[K = \det (\mathcal{W})\qquad H = \frac{1}{2}\text{trace}(\mathcal{W})\] where $\mathcal{W} = \mathcal{F}_{I}^{-1}\mathcal{F}_{II}$\[K = \frac{LN-M^2}{EG-F^2}\quad H = \frac{LG-2MF+NE}{2(EG-F^2)}\]
+
+Suppose we have a region defined as the following \[R_\delta = \{(u, v) \in \mathbb{R}^2\;|\;(u - u_0)^2 + (v - v_0)^2 \leq \delta^2\}\] then
+
+\[\lim_{\delta \rightarrow 0}\frac{\mathcal{A}_{\mathbf{N}}(R_{\delta})}{\mathcal{A}_{\sigma}(R_{\delta})} \lim_{\delta \rightarrow 0}\frac{\int_{R_\delta}\lVert\mathbf{N}_u \times\mathbf{N}_v\rVert dudv}{\int_{R_\delta}\lVert\sigma_u \times\sigma_v\rVert dudv}= |K |\]
+
+Let $\mathbf{p}$ be a point of a surface $\mathcal{S}$. There are \textit{principal curvatures} $\kappa_1, \kappa_2$ and \textit{principal vectors} forming a basis $\{\mathbf{t}_1, \mathbf{t}_2\}$ of $T_\mathbf{p}S$ such that \[\mathcal{W}(\mathbf{t}_1) = \kappa_1 \mathbf{t}_1\quad \mathcal{W}(\mathbf{t}_2) = \kappa_2 \mathbf{t}_2\] Moreover, if $\kappa_1 \neq \kappa_2$, then $\langle\mathbf{t}_1, \mathbf{t}_2\rangle = 0$.
+
+We can find the mean and Gaussian curvatures with principal curvatures \[H = \frac{1}{2}(\kappa_1 + \kappa_2)\quad K = \kappa_1\kappa_2\]
+
+Let $\gamma$ be a curve on an oriented surface $\mathcal{S}$, and let $\kappa_1, \kappa_2$ be the principal curvatures with corresponding principal vectors $\mathbf{t}_1, \mathbf{t}_2$, then \[\kappa_n = \kappa_1\cos^2\theta + \kappa_2\sin^2\theta\] where $\theta$ is the oriented angle $\hat{\mathbf{t}_1\dot{\gamma}}$.
+
+The principal curvatures at a point of a surface are the maximum and minimum values of the normal curvature of all curves on the surface that pass through the point. Moreover, the principal vectors are the tangent vectors of the curves giving these maximum and minimum values.
+
+We can find the principal curvatures by the following \[\left|\begin{array}{cc}
+    L - \kappa E & M - \kappa F \\
+    M - \kappa F & N - \kappa G
+\end{array}\right| = 0\]
+
+An \textit{umbilic} point of a surface is where both of its principal curvatures are equal. A surface where every point is an umbilic point is an open subset of either a sphere or a plane.
+
+\section*{Geodesics}
+
+A curve on a surface $\mathcal{S}$ is called a \textit{geodesic} if $\ddot{\gamma}$ is 0 or perpendicular to the tangent plane of the surface at the point $\gamma(t)$, i.e. parallel to its unit normal, for all values of $t$. Any geodesic have constant speed, and geodesic iff $\kappa_g = 0$ everywhere.
+
+Any part of a straight line of a surface is a geodesic, and any normal section of a surface is a geodesic. There is a geodesic through any given point of a surface in any given tangent direction.
+
+A curve $\gamma$ on a surface $\mathcal{S}$ is a geodesic iff for any part of $\gamma$ contained in $\sigma$, the following \textit{geodesic equations} are satisfied
+
+\[\begin{aligned}
+    \frac{d}{dt}(E\dot{u} + F\dot{v})=&\frac{1}{2}(E_u\dot{u}^2 + 2F_u\dot{u}\dot{v}+ G_u\dot{v}^2)\\
+    \frac{d}{dt}(F\dot{u} + G\dot{v})=&\frac{1}{2}(E_v\dot{u}^2 + 2F_v\dot{u}\dot{v}+ G_v\dot{v}^2)
+\end{aligned}\]
+
+equivalently, a curve on a surface is a geodesic iff the following equations are satisfied
+
+\[\begin{aligned}
+    \ddot{u} + \Gamma_{11}^1\dot{u}^2 + 2\Gamma_{12}^1\dot{u}\dot{v} + \Gamma_{22}^1 \dot{v}^2 &= 0\\
+    \ddot{v} + \Gamma_{11}^2\dot{u}^2 + 2\Gamma_{12}^2\dot{u}\dot{v} + \Gamma_{22}^2 \dot{v}^2 &= 0\\
+\end{aligned}\]
+
+Any local isometry between two surfaces takes the geodesics of one surface to the geodesics of the other.
+
+On the surface of revolution \[\sigma(u, v) = (f(u)\cos{v}, f(u)\sin{v}, g(u))\]
+\begin{enumerate}
+    \item [(i)] Every meridian is a geodesic
+    \item [(ii)] A parallel $u = u_0$ is a geodesic iff $\frac{df}{du} = 0$ when $u = u_0$, ie. $u_0$ is a stationary point of $f$
+\end{enumerate}
+
+(\textit{Clairut's Theorem}) Let $\gamma$ be a unit-speed curve on a surface of revolution $\mathcal{S}$, let $\rho : \mathcal{S} \mapsto \mathbb{R}$ be the distance of a point of $\mathcal{S}$ from the axis of rotation, and let $\psi$ be the angle between $\dot{\gamma}$ and the meridians of $\mathcal{S}$. If $\gamma$ is a geodesic, then $\rho\sin\psi$ is constant along $\gamma$. Conversely, if $\rho\sin\psi$ is constant along $\gamma$, and if no part of $\gamma$ is part of some parallel of $\mathcal{S}$, then $\gamma$ is a geodesic.
+
+Suppose there are two fixed points $\mathbf{p}, \mathbf{q}$ on $\sigma$. We embed $\gamma$ in a smooth family of curves on $\sigma$ passing thought both of $\mathbf{p}, \mathbf{q}$. By such a family, we mean a curve $\gamma^\tau$ on $\sigma$, for each $\tau$ in an open interval $(-\delta, \delta)$, such that
+
+\begin{enumerate}
+    \item [(i)] there is an $\epsilon > 0$ such that $\gamma^\tau(t)$ is defined for all $t \in (-\epsilon, \epsilon)$ and all $\tau \in (-\delta, \delta)$
+    \item [(ii)] for some $a, b$ with $-\epsilon < a < b < \epsilon$, we have \[\gamma^\tau(a) = \mathbf{p} \qquad \gamma^\tau(b) = \mathbf{q} \qquad \forall \tau \in (-\delta, \delta)\]
+    \item [(iii)] the map from the $(-\delta, \delta) \times (-\epsilon, \epsilon)$ into $\mathbb{R}^3$ given by \[(\tau, t) \mapsto \gamma^\tau(t)\] is smooth
+    \item [(iv)] $\gamma^0 = \gamma$
+\end{enumerate}
+
+The length of the part $\gamma_\tau$ between $\mathbf{p}$ and $\mathbf{q}$ is \[\mathcal{L}(\tau) = \int_{a}^{b}\lVert \dot{\gamma}^\tau \rVert dt\]
+where a dot denotes $\frac{d}{dt}$.
+
+A unit-speed curve is a geodesic iff \[\frac{d}{d\tau}\mathcal{L}(\tau) = 0 \qquad \text{when} \tau = 0\]
+for all families of curves $\gamma^\tau$ with $\gamma_0 = \gamma$.
+
+Let $\mathbf{p} \in \mathcal{S}$, $\gamma$ be a unit-speed geodesic on $\mathcal{S}$ with $\gamma(0) = \mathbf{p}$. For any value of $v$, let $\tilde{\gamma}^v$, with parameter $u$, be a unit-speed geodesic such that $\tilde{\gamma}^v(0) = \gamma(v)$ which is perpendicular to $\gamma$ at $\gamma(v)$. We define $\sigma(u, v) = \gamma^v(u)$. There is an open subset $U$ of $\mathbb{R}^2$ containing $(0,0)$ such that $\sigma: U \mapsto \mathbb{R}^3$ is an allowable surface patch of $\mathcal{S}$. Moreover, the FFF of $\sigma$ is $du^2 + G(u, v)dv^2$ where $G$ is a smooth function on $U$ such that $G(0, v) = 1$ and $G_u(0, v) = 0$ whenever $(0, v) \in U$.
+
+\section*{\textit{Gauss' Theorema Egregium}}
+
+(\textit{Codazzi-Mainardi Equations})
+\[\begin{aligned}
+    L_v - M_u=&L\Gamma_{12}^1 + M(\Gamma_{12}^2 - \Gamma_{11}^1) - N\Gamma_{11}^2\\
+    M_v - N_u=&L\Gamma_{22}^1 + M(\Gamma_{22}^2 - \Gamma_{12}^1) - N\Gamma_{12}^2
+\end{aligned}\]
+
+(\textit{Gauss Equations})
+\[\begin{aligned}
+    EK=&(\Gamma_{11}^2)_v - (\Gamma_{12}^2)_u+\Gamma_{11}^1\Gamma_{12}^2+\Gamma_{11}^2\Gamma_{22}^2 \\
+     &- \Gamma_{12}^1\Gamma_{11}^2-(\Gamma_{12}^2)^2\\
+    FK=&(\Gamma_{12}^1)_u - (\Gamma_{11}^1)_v+\Gamma_{12}^2\Gamma_{12}^1 - \Gamma_{11}^2\Gamma_{22}^1\\
+    FK=&(\Gamma_{12}^2)_v - (\Gamma_{22}^2)_u+\Gamma_{12}^1\Gamma_{12}^2 - \Gamma_{22}^1\Gamma_{11}^2\\
+    GK=&(\Gamma_{22}^1)_u - (\Gamma_{12}^1)_v+\Gamma_{22}^1\Gamma_{11}^1+\Gamma_{22}^2\Gamma_{12}^1\\
+    &-(\Gamma_{12}^1)^2 - \Gamma_{12}^2\Gamma_{22}^1
+\end{aligned}\]
+I took way too long typing this out
+
+Let $\sigma : U \mapsto \mathbb{R}^3$ and $\tilde{\sigma} : U \mapsto \mathbb{R}^3$ be surface patches with the same FFF and SFF. Then, there is a direct isometry $M$ such that $\tilde{\sigma} = M (\sigma)$
+
+(\textit{Gauss' Theorema Egregium}) The Gaussian curvature of a surface is preserved by local isometries. If $\mathcal{S}_1$ and $\mathcal{S}_2$ are two surfaces and $f : \mathcal{S}_1 \mapsto \mathcal{S}_2$ is a local isometry, then for any point $\mathbf{p}\in \mathcal{S}_1$ the Gaussian curvature of $\mathcal{S}_1$ at $\mathbf{p}$ is equal to that of $\mathcal{S}_2$ at $f(\mathbf{p})$. The theorem is sometimes expressed by saying the Gaussian curvature is an intrinsic property of a surface.
+
+The Gaussian curvature is given by
+\[K = \frac{a - b}{(EF - G^2)^2}\]
+
+Where \[a = \left|\begin{array}{ccc}
+    -\frac{1}{2}E_{vv}+F_{uv}-\frac{1}{2}G_{uu}&\frac{1}{2}E_u & F_u-\frac{1}{2}E_v\\
+    F_v-\frac{1}{2}G_u & E & F\\
+    \frac{1}{2}G_v & F & G
+\end{array}\right|\] and \[b = \left|\begin{array}{ccc}
+    0&\frac{1}{2}E_v & \frac{1}{2}G_u\\
+    \frac{1}{2}E_v & E & F\\
+    \frac{1}{2}G_u & F & G
+\end{array}\right|\]
+
+If $F=0$, the Gaussian curvature is given by the following
+
+\[K = -\frac{1}{2\sqrt{EG}}\left\{\frac{\partial}{\partial u}\left(\frac{G_u}{\sqrt{EG}}\right) + \frac{\partial}{\partial v}\left(\frac{E_v}{\sqrt{EG}}\right)\right\}\]
+
+If $E=1$ and $F=0$, then 
+
+\[K = -\frac{1}{\sqrt{G}}\frac{\partial^2\sqrt{G}}{\partial u^2}\]
+
+Any point of a surface of constant Gaussian curvature is contained in a patch that is isometric to an open subset of a plane, sphere, or a pesudosphere.
+
+Up to a dilation, we consider only the following cases:
+\begin{itemize}
+    \item (K = 0) Plane
+    \item (K = 1) Sphere
+    \item (K = -1) Pseudosphere
+\end{itemize}
+
+\section*{General Definitions}
+
+\subsubsection*{\textit{smoothness}}
+
+A function (could be a curve or a surface) is said to be \textit{smooth} if every $n$'th order derivative exists for all natural $n$ and all input parameter values.
+
+\subsubsection*{\textit{homeomorphism}}
+
+A function is said to be a \textit{homeomorphism} if it is continuous and bijective, and its inverse is continuous as well.
+
+\subsubsection*{\textit{diffeomorphism}}
+
+A function is said to be a \textit{diffeomorphism} if it is smooth, and its inverse is also smooth.
+
+\subsubsection*{\textit{generalized cone}}
+
+\[\sigma(u, v) = (1 + v)\gamma(u) - v\mathbf{v}\] where $\mathbf{v}$ is the vertex of the cone
+
+\subsubsection*{\textit{spherical geometry}}
+
+The area of a spherical triangle on the unit sphere $S^2$ with internal angles $\alpha, \beta, \gamma$ is $\alpha + \beta + \gamma - \pi$
+
+\end{multicols*}
+
+\end{document}
